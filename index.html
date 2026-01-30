@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MH PR Intelligence 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;900&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const { useState } = React;
+
+        const App = () => {
+            const [activeTab, setActiveTab] = useState('summary');
+
+            return (
+                <div className="min-h-screen flex flex-col md:flex-row">
+                    {/* Sidebar */}
+                    <div className="w-full md:w-64 bg-slate-900 text-white p-6">
+                        <h1 className="text-xl font-black mb-8 text-[#C5B358]">MH STRATEGY 2026</h1>
+                        <nav className="space-y-4">
+                            <button onClick={() => setActiveTab('summary')} className="block w-full text-left font-bold hover:text-[#C5B358]">Resumen Ejecutivo</button>
+                            <button onClick={() => setActiveTab('bigbets')} className="block w-full text-left font-bold hover:text-[#C5B358]">Big Bets (F1/Pharrell)</button>
+                        </nav>
+                    </div>
+
+                    {/* Main Content */}
+                    <div className="flex-1 p-8 md:p-12">
+                        {activeTab === 'summary' && (
+                            <div>
+                                <h2 className="text-4xl font-black mb-6 uppercase italic">Objetivo de Marca 2026</h2>
+                                <p className="text-xl mb-8">Reclutar a la próxima generación de amantes de Moët & Chandon, enfocándose en afiliación y nuevas ocasiones (+2% volumen)[cite: 169].</p>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="bg-white p-6 rounded-xl shadow-md border-t-4 border-[#C5B358]">
+                                        <h3 className="font-bold uppercase mb-2">Visión Moët</h3>
+                                        <p className="text-sm italic">"Ser un ícono eterno de alegría"[cite: 167].</p>
+                                    </div>
+                                    <div className="bg-white p-6 rounded-xl shadow-md border-t-4 border-[#FFB400]">
+                                        <h3 className="font-bold uppercase mb-2">Veuve Clicquot</h3>
+                                        <p className="text-sm italic">Posicionarse como una casa de lujo más allá del champagne[cite: 349].</p>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {activeTab === 'bigbets' && (
+                            <div>
+                                <h2 className="text-4xl font-black mb-6 uppercase">Big Bets 2026</h2>
+                                <div className="space-y-6">
+                                    <div className="bg-slate-100 p-8 rounded-2xl">
+                                        <h3 className="text-2xl font-black mb-2 text-red-600 italic">FORMULA 1 </h3>
+                                        <p>Foco en Q3-Q4 para elevar la visibilidad de marca en momentos de alta energía[cite: 237, 281].</p>
+                                    </div>
+                                    <div className="bg-slate-100 p-8 rounded-2xl">
+                                        <h3 className="text-2xl font-black mb-2 text-blue-600 italic">PHARRELL WILLIAMS S2 </h3>
+                                        <p>Estrategia clave de "Summer Experiences" para conectar con audiencias culturales y metropolitanas[cite: 233, 272].</p>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
