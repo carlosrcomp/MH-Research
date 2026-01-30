@@ -3,111 +3,404 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dossier Moët Hennessy 2026</title>
+    <title>Dossier Estratégico Moët Hennessy 2026</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React & ReactDOM CDN -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Babel for JSX -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
-        .brand-gold { color: #C5B358; }
-        .bg-brand-gold { background-color: #C5B358; }
+        .radar-transition { transition: all 1.5s ease-in-out; }
     </style>
 </head>
 <body>
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState } = React;
+        // Componente de Iconos SVG Integrado con Fragmentos para evitar errores de sintaxis
+        const Icon = ({ name, size = 20, className = "" }) => {
+            const icons = {
+                globe: <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8zM12 4a8 8 0 0 1 0 16 8 8 0 0 1 0-16zM4.93 4.93a10 10 0 0 1 14.14 0M4.93 19.07a10 10 0 0 0 14.14 0"/>,
+                layers: <path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.27a1 1 0 0 0 0 1.83l8.57 4.09a2 2 0 0 0 1.66 0l8.57-4.09a1 1 0 0 0 0-1.83zM2 12l10 4.76L22 12M2 16l10 4.76L22 16"/>,
+                glass: <path d="M7 2v10a5 5 0 0 0 10 0V2h-2v10a3 3 0 0 1-6 0V2H7zm5 15v5m-3 0h6"/>,
+                palette: (
+                    <React.Fragment>
+                        <circle cx="13.5" cy="6.5" r=".5"/>
+                        <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.9 0 1.6-.5 2-1.2.4.7 1.1 1.2 2 1.2a3 3 0 0 0 3-3c0-1.5-1.3-2.7-2.8-2.8.3-.5.5-1.1.5-1.7a6 6 0 0 0-6-6h-1"/>
+                    </React.Fragment>
+                ),
+                mouse: <path d="m15 2-3.5 7h7L15 2zM8 8l1.5 3L8 14H5l-1.5-3L5 8h3zM19 15c0 3.3-2.7 6-6 6s-6-2.7-6-6 2.7-6 6-6 6 2.7 6 6z"/>,
+                share: <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8m-4-6-4-4-4 4m4-4v13"/>,
+                zap: <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>,
+                heart: <path d="M19 14c1.5-1.5 3-3 3-5.5a4.5 4.5 0 0 0-9-3c-1.5 1.5-3 3-3 5.5a4.5 4.5 0 0 0 9 3z"/>,
+                target: (
+                    <React.Fragment>
+                        <circle cx="12" cy="12" r="10"/>
+                        <circle cx="12" cy="12" r="6"/>
+                        <circle cx="12" cy="12" r="2"/>
+                    </React.Fragment>
+                ),
+                activity: <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>,
+                calendar: (
+                    <React.Fragment>
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                        <line x1="16" y1="2" x2="16" y2="6"/>
+                        <line x1="8" y1="2" x2="8" y2="6"/>
+                        <line x1="3" y1="10" x2="21" y2="10"/>
+                    </React.Fragment>
+                )
+            };
+            return (
+                <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+                    {icons[name] || <circle cx="12" cy="12" r="10"/>}
+                </svg>
+            );
+        };
 
         const App = () => {
-            const [tab, setTab] = useState('strategy');
+            const [activeTab, setActiveTab] = React.useState('dashboard');
+            const [activeBrand, setActiveBrand] = React.useState('moet');
+            const [activeMarketBrand, setActiveMarketBrand] = React.useState('moet');
+
+            // --- DATASETS ---
+            const regionalIntel = [
+                { city: "CDMX", intent: "Validación Cultural y Estatus", driver: "Prestigio & Networking VIP", share: 52, color: "#9333ea", searches: "Mesa VIP Zona Maco, Reservados Fine Dining, Dom Pérignon P2" },
+                { city: "Monterrey", intent: "Logro y Legado Familiar", driver: "Éxito & Gifting Premium", share: 18, color: "#d97706", searches: "Moët personalizado, Regalos de lujo San Pedro, Cavas privadas" },
+                { city: "Guadalajara", intent: "Exploración de Tendencias", driver: "Innovación & Mixología", share: 12, color: "#2563eb", searches: "Terrazas Spritz, Chandon Garden Gdl, Hotspots 2026" },
+                { city: "Tulum", intent: "Hedonismo Solaire", driver: "Estética & Libertad", share: 12, color: "#FFB400", searches: "Beach Clubs Tulum, Rich on Ice Service, Luxury Parties" }
+            ];
+
+            const luxuryPsychography = {
+                moet: { name: "Moët & Chandon", persona: "The Success Validator", psych: "El lujo como trofeo de éxito y pertenencia.", luxuryDimensions: { status: 90, heritage: 70, innovation: 40 }, digital: "Instagram Reels, LinkedIn.", behavior: "Ritualización del descorche.", intentTrend: [40, 35, 30, 50, 65, 55, 60, 45, 40, 50, 85, 100] },
+                veuve: { name: "Veuve Clicquot", persona: "The Creative Aesthetic", psych: "Busca una 'Dolce Vita' creativa y solar. Valora el diseño.", luxuryDimensions: { status: 60, heritage: 55, innovation: 85 }, digital: "Pinterest, TikTok Vlogs.", behavior: "Contenido estético y cromático.", intentTrend: [30, 85, 60, 45, 70, 95, 100, 90, 65, 55, 45, 50] },
+                dom: { name: "Dom Pérignon", persona: "The Intellectual Collector", psych: "El lujo es conocimiento y misterio. Valora el tiempo.", luxuryDimensions: { status: 95, heritage: 90, innovation: 75 }, digital: "Newsletters de inversión.", behavior: "Consumo discreto y ritualizado.", intentTrend: [20, 100, 50, 35, 40, 45, 40, 35, 50, 65, 75, 90] },
+                chandon: { name: "Chandon", persona: "The Inclusivity Explorer", psych: "Rechaza el lujo rígido. Valora la frescura y la comunidad.", luxuryDimensions: { status: 40, heritage: 30, innovation: 95 }, digital: "TikTok, Spotify Playlists.", behavior: "Mixología y consumo casual.", intentTrend: [55, 50, 60, 70, 85, 90, 95, 85, 75, 65, 70, 80] }
+            };
+
+            const brandOccasions = {
+                moet: { name: "Moët & Chandon", color: "#C5B358", triggers: ["Celebración", "Hito"], intent: "Validación Social", trends: [40, 45, 50, 60, 85, 100], segment: "Professional Achievers", keywords: { "Social": "VIP Table, Gala" } },
+                veuve: { name: "Veuve Clicquot", color: "#FFB400", triggers: ["Diseño", "Brunch"], intent: "Auto-expresión", trends: [30, 70, 95, 90, 55, 50], segment: "Creative Nomads", keywords: { "Sun": "Beach Club, Rooftop" } },
+                dom: { name: "Dom Pérignon", color: "#1A1A1A", triggers: ["Creación", "Añada"], intent: "Trascendencia", trends: [20, 95, 40, 45, 75, 90], segment: "Ultra-HNWI", keywords: { "Art": "Inversión, Maco" } },
+                chandon: { name: "Chandon", color: "#E30613", triggers: ["Fresh", "Casual"], intent: "Conexión Fluida", trends: [55, 60, 85, 95, 65, 75], segment: "Gen Z & Millennial", keywords: { "Spritz": "Hielo, Naranja" } }
+            };
+
+            const seasonalTimeline = [
+                { month: 'Ene', maco: 10, art: 5, eoy: 5 }, { month: 'Feb', maco: 100, art: 80, eoy: 5 }, { month: 'Mar', maco: 20, art: 30, eoy: 5 },
+                { month: 'Dic', maco: 10, art: 10, eoy: 100 }
+            ];
+
+            const searchClusters = {
+                onTrade: [
+                    { word: "Terrazas Polanco", sentiment: "Positivo", volume: "92/100", seasonality: "Fines de semana" },
+                    { word: "Vibe Dining spots", sentiment: "Extremo", volume: "85/100", seasonality: "Jueves - Sábado" },
+                    { word: "Beach Clubs Tulum", sentiment: "Positivo", volume: "88/100", seasonality: "Invierno" }
+                ],
+                atHome: [
+                    { word: "Regalo Moët personalizado", sentiment: "Extremo", volume: "95/100", seasonality: "Mayo / Diciembre" },
+                    { word: "Maridaje cena casa", sentiment: "Positivo", volume: "65/100", seasonality: "Planificación" },
+                    { word: "E-commerce de lujo", sentiment: "Pragmático", volume: "70/100", seasonality: "Peaks Festivos" }
+                ]
+            };
+
+            const channelTrends = [
+                { month: 'Ene', on: 60, home: 40 }, { month: 'Feb', on: 95, home: 25 }, { month: 'Mar', on: 80, home: 35 },
+                { month: 'Abr', on: 75, home: 45 }, { month: 'May', on: 65, home: 85 }, { month: 'Jun', on: 85, home: 40 },
+                { month: 'Jul', on: 90, home: 35 }, { month: 'Dic', on: 98, home: 98 }
+            ];
+
+            const brandMarketAnalytic = {
+                moet: { radar: [90, 60, 85, 75, 60], insight: "Dominancia absoluta en 'Status'.", color: "#C5B358", intent: [40, 35, 45, 50, 65, 100] },
+                veuve: { radar: [60, 85, 70, 65, 95], insight: "Liderazgo en 'Design' y Estilo.", color: "#FFB400", intent: [30, 85, 60, 45, 70, 50] },
+                dom: { radar: [100, 20, 95, 100, 80], insight: "Máxima 'Exclusividad' Intelectual.", color: "#1A1A1A", intent: [20, 100, 50, 35, 40, 90] },
+                chandon: { radar: [30, 100, 45, 35, 90], insight: "Innovación y Consumo Casual.", color: "#E30613", intent: [55, 50, 60, 70, 85, 80] }
+            };
+
+            const getRadarPoints = (values) => {
+                const radius = 100;
+                const center = 150;
+                return values.map((v, i) => {
+                    const angle = (i * 72 - 90) * Math.PI / 180;
+                    const r = (v / 100) * radius;
+                    return `${center + r * Math.cos(angle)},${center + r * Math.sin(angle)}`;
+                }).join(' ');
+            };
 
             return (
-                <div className="min-h-screen flex flex-col md:flex-row">
-                    {/* Navegación PR Team */}
-                    <div className="w-full md:w-72 bg-slate-950 text-white p-8 flex flex-col border-r border-slate-800">
-                        <h1 className="text-2xl font-black italic tracking-tighter mb-10 brand-gold">MH 2026 <br/>PR STRATEGY</h1>
-                        <nav className="flex-1 space-y-2">
-                            <button onClick={() => setTab('strategy')} className={`w-full text-left p-4 rounded-xl font-bold uppercase text-[10px] tracking-widest transition ${tab === 'strategy' ? 'bg-white text-slate-900 shadow-xl' : 'text-slate-400 hover:bg-slate-900'}`}>Objetivos de Marca</button>
-                            <button onClick={() => setTab('calendar')} className={`w-full text-left p-4 rounded-xl font-bold uppercase text-[10px] tracking-widest transition ${tab === 'calendar' ? 'bg-white text-slate-900 shadow-xl' : 'text-slate-400 hover:bg-slate-900'}`}>Calendario 2026</button>
-                            <button onClick={() => setTab('influencers')} className={`w-full text-left p-4 rounded-xl font-bold uppercase text-[10px] tracking-widest transition ${tab === 'influencers' ? 'bg-white text-slate-900 shadow-xl' : 'text-slate-400 hover:bg-slate-900'}`}>Estrategia Influencers</button>
+                <div className="min-h-screen bg-[#F4F7F9] text-slate-900 flex">
+                    {/* SIDEBAR */}
+                    <div className="w-24 md:w-80 bg-[#0F172A] text-white flex flex-col h-screen sticky top-0 border-r border-slate-800">
+                        <div className="p-10 border-b border-slate-800 text-center md:text-left">
+                            <h1 className="text-2xl font-black tracking-tighter leading-none italic uppercase">MH <br/><span className="text-[#C5B358]">PR INTEL</span></h1>
+                        </div>
+                        <nav className="flex-1 overflow-y-auto pt-8 space-y-2 px-4 text-left">
+                            {[
+                                { id: 'dashboard', label: 'Intelligence Hub', icon: 'globe' },
+                                { id: 'profiles', label: 'Psicografía de Lujo', icon: 'layers' },
+                                { id: 'occasions', label: 'Occasion DNA', icon: 'glass' },
+                                { id: 'artweek', label: 'Seasonal Dynamics', icon: 'palette' },
+                                { id: 'channels', label: 'Channel Deep-Dive', icon: 'mouse' },
+                                { id: 'share', label: 'Market Share 360', icon: 'share' },
+                            ].map((tab) => (
+                                <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`w-full flex items-center p-4 rounded-2xl transition-all duration-300 ${activeTab === tab.id ? 'bg-white text-slate-900 font-bold shadow-xl' : 'hover:bg-slate-800 text-slate-500'}`}>
+                                    <Icon name={tab.icon} className="mr-0 md:mr-4" />
+                                    <span className="hidden md:inline text-[10px] uppercase font-black tracking-widest">{tab.label}</span>
+                                </button>
+                            ))}
                         </nav>
-                        <div className="pt-8 border-t border-slate-800 opacity-50 text-[8px] uppercase tracking-widest font-black italic text-center">Data-Driven Ecosystem</div>
                     </div>
 
-                    {/* Contenido Dinámico */}
-                    <main className="flex-1 p-8 md:p-16 overflow-y-auto">
-                        {tab === 'strategy' && (
-                            <div className="space-y-12 max-w-4xl animate-in fade-in">
-                                <h2 className="text-6xl font-black uppercase tracking-tighter italic underline decoration-[#C5B358]/30">Brand Vision</h2>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                    <div className="p-8 bg-white rounded-3xl shadow-xl border-t-8 border-[#C5B358]">
-                                        <h3 className="font-black text-xl mb-4 italic uppercase">Moët & Chandon</h3>
-                                        <p className="text-sm text-slate-600 mb-4">"Eternal icon of joy." [cite: 167]</p>
-                                        <ul className="text-xs space-y-2 font-bold uppercase tracking-tight text-slate-400">
-                                            <li>• Iconic</li>
-                                            <li>• Joyful</li>
-                                            <li>• Chic</li>
-                                        </ul>
-                                    </div>
-                                    <div className="p-8 bg-white rounded-3xl shadow-xl border-t-8 border-[#FFB400]">
-                                        <h3 className="font-black text-xl mb-4 italic uppercase">Veuve Clicquot</h3>
-                                        <p className="text-sm text-slate-600 mb-4">"Exist as a luxury house beyond champagne." [cite: 349]</p>
-                                        <ul className="text-xs space-y-2 font-bold uppercase tracking-tight text-slate-400">
-                                            <li>• Solaire House</li>
-                                            <li>• Luxury House</li>
-                                        </ul>
+                    {/* MAIN AREA */}
+                    <div className="flex-1 overflow-y-auto">
+                        <header className="sticky top-0 bg-white/90 backdrop-blur-2xl z-40 px-12 py-8 border-b border-slate-200 flex justify-between items-center shadow-sm">
+                            <h2 className="text-2xl font-black tracking-tighter uppercase text-slate-900">PR Strategic Dashboard 2026</h2>
+                        </header>
+
+                        <div className="p-12 max-w-[1600px] mx-auto space-y-24">
+                            
+                            {/* INTELLIGENCE HUB */}
+                            {activeTab === 'dashboard' && (
+                                <div className="space-y-12 animate-in fade-in duration-500">
+                                    <h1 className="text-7xl font-black tracking-tighter uppercase">Regional <br/> Hub</h1>
+                                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                                        {regionalIntel.map((region, i) => (
+                                            <div key={i} className="bg-white p-12 rounded-[4rem] shadow-xl border-l-[15px]" style={{borderLeftColor: region.color}}>
+                                                <h4 className="text-4xl font-black uppercase mb-6">{region.city}</h4>
+                                                <div className="grid grid-cols-2 gap-8 mb-8">
+                                                    <div className="p-6 bg-slate-50 rounded-3xl">
+                                                        <p className="text-[10px] font-black uppercase text-indigo-500 mb-2">Intent</p>
+                                                        <p className="text-sm font-bold leading-tight">{region.intent}</p>
+                                                    </div>
+                                                    <div className="p-6 bg-slate-50 rounded-3xl">
+                                                        <p className="text-[10px] font-black uppercase text-red-500 mb-2">Emotional Driver</p>
+                                                        <p className="text-sm font-bold leading-tight">{region.driver}</p>
+                                                    </div>
+                                                </div>
+                                                <div className="pt-6 border-t border-slate-100 opacity-60">
+                                                    <p className="text-[10px] font-black uppercase text-slate-400 mb-2 italic">Búsquedas Críticas:</p>
+                                                    <p className="text-xs text-slate-700 font-bold tracking-tight italic uppercase italic">"{region.searches}"</p>
+                                                </div>
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
-                            </div>
-                        )}
+                            )}
 
-                        {tab === 'calendar' && (
-                            <div className="space-y-12 animate-in slide-in-from-bottom">
-                                <h2 className="text-6xl font-black uppercase tracking-tighter italic">Big Bets 2026</h2>
-                                <div className="space-y-4">
-                                    {[
-                                        { q: "Q2", event: "Summer by Pharrell Williams S2", focus: "Junio-Julio [cite: 272]", ayp: "11% Budget [cite: 233]" },
-                                        { q: "Q4", event: "Formula One (F1)", focus: "Octubre-Noviembre [cite: 281]", ayp: "7% Budget [cite: 237]" },
-                                        { q: "Q4", event: "Holiday Season / EOY", focus: "Diciembre [cite: 283]", ayp: "36% Budget [cite: 241]" }
-                                    ].map((item, i) => (
-                                        <div key={i} className="flex items-center gap-6 p-6 bg-white rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition">
-                                            <span className="text-2xl font-black text-slate-200">{item.q}</span>
-                                            <div className="flex-1">
-                                                <h4 className="font-black uppercase italic tracking-tighter">{item.event}</h4>
-                                                <p className="text-[10px] text-slate-400 font-bold uppercase">{item.focus}</p>
+                            {/* PSICOGRAFÍA */}
+                            {activeTab === 'profiles' && (
+                                <div className="space-y-12 animate-in slide-in-from-right duration-500">
+                                    <h1 className="text-7xl font-black tracking-tighter uppercase italic">Psychography</h1>
+                                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                                        {Object.keys(luxuryPsychography).map((key) => (
+                                            <div key={key} className="bg-white p-16 rounded-[4.5rem] shadow-2xl group relative overflow-hidden transition-all hover:shadow-indigo-500/10">
+                                                <h4 className="text-4xl font-black uppercase mb-2 leading-none">{luxuryPsychography[key].name}</h4>
+                                                <p className="text-[#C5B358] font-black text-xs uppercase mb-8 tracking-widest">{luxuryPsychography[key].persona}</p>
+                                                <div className="p-12 bg-slate-50 rounded-[3rem] italic text-xl mb-12">"{luxuryPsychography[key].psych}"</div>
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                                                    <div className="space-y-6">
+                                                        <h5 className="text-[11px] font-black uppercase text-slate-400 tracking-widest">Luxury Dimensions (%)</h5>
+                                                        {Object.entries(luxuryPsychography[key].luxuryDimensions).map(([dim, val]) => (
+                                                            <div key={dim}>
+                                                                <div className="flex justify-between text-[10px] font-black uppercase mb-1 opacity-60"><span>{dim}</span><span>{val}%</span></div>
+                                                                <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden p-0.5">
+                                                                    <div className="h-full bg-slate-900 rounded-full transition-all duration-[2s]" style={{width: `${val}%`}}></div>
+                                                                </div>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                    <div className="text-xs space-y-6 font-bold uppercase tracking-tighter">
+                                                        <div><span className="text-slate-400 text-[10px] tracking-widest">Espacios Digitales:</span> <br/><p className="mt-1 leading-tight text-slate-800 italic">{luxuryPsychography[key].digital}</p></div>
+                                                        <div><span className="text-slate-400 text-[10px] tracking-widest">Behavior:</span> <br/><p className="mt-1 leading-tight text-slate-800 italic">{luxuryPsychography[key].behavior}</p></div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <span className="px-4 py-1 bg-slate-900 text-white text-[10px] font-black rounded-full italic">{item.ayp}</span>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* OCCASION DNA */}
+                            {activeTab === 'occasions' && (
+                                <div className="space-y-16 animate-in zoom-in-95 duration-500">
+                                    <div className="flex flex-col md:flex-row justify-between items-end gap-8">
+                                        <h1 className="text-7xl font-black tracking-tighter uppercase">Occasion <br/> Brand DNA</h1>
+                                        <div className="flex flex-wrap gap-3 mb-6 bg-white p-4 rounded-full shadow-2xl border border-slate-100">
+                                            {Object.keys(brandOccasions).map(key => (
+                                                <button key={key} onClick={() => setActiveBrand(key)} className={`px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-[0.2em] transition-all border-2 ${activeBrand === key ? 'bg-slate-900 text-white border-slate-900 shadow-xl' : 'bg-transparent text-neutral-400 border-transparent hover:border-slate-200'}`}>
+                                                    {key.toUpperCase()}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                                        <div className="lg:col-span-1 bg-white p-12 rounded-[4.5rem] shadow-xl border-t-[25px]" style={{borderTopColor: brandOccasions[activeBrand].color}}>
+                                            <h3 className="text-4xl font-black uppercase mb-10 italic">Strategic Intent</h3>
+                                            <div className="space-y-10">
+                                                <div>
+                                                    <h5 className="text-[11px] font-black uppercase text-slate-400 tracking-widest mb-4 italic">Semantic Triggers:</h5>
+                                                    <div className="flex flex-wrap gap-3">
+                                                        {brandOccasions[activeBrand].triggers?.map((t, i) => (
+                                                            <span key={i} className="px-5 py-2.5 bg-slate-900 text-white text-[10px] font-black rounded-2xl uppercase tracking-tighter italic shadow-md">#{t}</span>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                                <div className="p-8 bg-slate-50 rounded-[3rem] border border-slate-100">
+                                                    <h5 className="text-[11px] font-black uppercase text-slate-400 mb-2 tracking-widest">Segment Focus:</h5>
+                                                    <p className="text-sm font-black text-slate-900 uppercase tracking-tighter italic">{brandOccasions[activeBrand].segment}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="lg:col-span-2 bg-white p-20 rounded-[4.5rem] shadow-xl border border-slate-100 flex flex-col overflow-hidden relative">
+                                            <h3 className="text-3xl font-black uppercase tracking-tighter mb-20 italic flex items-center gap-6 underline decoration-[#C5B358]/30"><Icon name="target" size={32} /> Volumen de Búsqueda 2026</h3>
+                                            <div className="flex-1 flex items-end justify-between gap-3 h-80 relative z-10">
+                                                {luxuryPsychography[activeBrand].intentTrend.slice(0, 12).map((h, i) => (
+                                                    <div key={i} className="flex-1 flex flex-col h-full justify-end items-center group">
+                                                        <div className="w-full bg-slate-50 rounded-t-3xl relative overflow-hidden h-full flex items-end border-x border-t border-slate-100 p-1 shadow-inner transition-all group-hover:scale-105">
+                                                            <div className="w-full transition-all duration-[2s] rounded-t-2xl shadow-2xl" style={{height: `${h}%`, backgroundColor: brandOccasions[activeBrand].color}}></div>
+                                                        </div>
+                                                        <span className="text-[10px] font-black text-slate-400 mt-8 font-mono">{['E','F','M','A','M','J','J','A','S','O','N','D'][i]}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* SEASONALS */}
+                            {activeTab === 'artweek' && (
+                                <div className="space-y-16 animate-in fade-in duration-500">
+                                    <h1 className="text-7xl font-black tracking-tighter uppercase italic">Seasonal <br/> Dynamics</h1>
+                                    <div className="bg-white p-20 rounded-[5rem] shadow-2xl relative overflow-hidden">
+                                        <h3 className="text-3xl font-black uppercase tracking-tighter mb-24 italic">Event Interest Timeline</h3>
+                                        <div className="h-96 relative flex items-end justify-between px-10 gap-3">
+                                            {seasonalTimeline.map((data, i) => (
+                                                <div key={i} className="flex-1 flex flex-col h-full justify-end group">
+                                                    <div className="flex gap-1.5 h-full items-end">
+                                                        <div className="flex-1 bg-purple-600/20 rounded-t-xl transition-all duration-1000 group-hover:bg-purple-600" style={{height: `${data.maco}%`}}></div>
+                                                        <div className="flex-1 bg-sky-500/20 rounded-t-xl transition-all duration-1000 group-hover:bg-sky-500" style={{height: `${data.art}%`}}></div>
+                                                        <div className="flex-1 bg-amber-500/20 rounded-t-xl transition-all duration-1000 group-hover:bg-amber-500" style={{height: `${data.eoy}%`}}></div>
+                                                    </div>
+                                                    <div className="text-[11px] font-black text-slate-400 mt-8 text-center font-mono uppercase tracking-widest">{data.month}</div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <div className="mt-12 flex gap-10 justify-center">
+                                            <div className="flex items-center gap-2"><div className="w-3 h-3 bg-purple-600 rounded"></div><span className="text-[10px] font-black uppercase">Zona Maco</span></div>
+                                            <div className="flex items-center gap-2"><div className="w-3 h-3 bg-sky-500 rounded"></div><span className="text-[10px] font-black uppercase">Art Weekend</span></div>
+                                            <div className="flex items-center gap-2"><div className="w-3 h-3 bg-amber-500 rounded"></div><span className="text-[10px] font-black uppercase">End of Year</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* CHANNEL DEEP-DIVE */}
+                            {activeTab === 'channels' && (
+                                <div className="space-y-20 animate-in slide-in-from-bottom duration-500">
+                                    <h1 className="text-7xl font-black tracking-tighter uppercase">Channel <br/> Trends</h1>
+                                    <div className="bg-white p-16 rounded-[4.5rem] shadow-2xl border border-slate-100">
+                                        <h3 className="text-3xl font-black uppercase mb-16 italic tracking-tight flex items-center gap-6">
+                                            <Icon name="activity" size={32} /> Search Cluster Volume Mapping
+                                        </h3>
+                                        <div className="h-[400px] flex items-end gap-3 px-10">
+                                            {channelTrends.map((d, i) => (
+                                                <div key={i} className="flex-1 flex flex-col h-full justify-end items-center group">
+                                                    <div className="w-full flex gap-2 items-end h-full">
+                                                        <div className="flex-1 bg-indigo-600/30 rounded-t-2xl transition-all duration-1000 group-hover:bg-indigo-600 shadow-xl" style={{height: `${d.on}%`}}></div>
+                                                        <div className="flex-1 bg-emerald-500/30 rounded-t-2xl transition-all duration-1000 group-hover:bg-emerald-500 shadow-xl" style={{height: `${d.home}%`}}></div>
+                                                    </div>
+                                                    <div className="text-[11px] font-black text-slate-400 mt-8 uppercase font-mono tracking-widest">{d.month}</div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {['onTrade', 'atHome'].map(cType => (
+                                        <div key={cType} className={`bg-white rounded-[4rem] shadow-2xl overflow-hidden border-t-[20px] transition-all hover:translate-y-[-10px]`} style={{borderColor: cType === 'onTrade' ? '#4f46e5' : '#10b981'}}>
+                                            <div className="p-12 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                                                <h3 className="text-4xl font-black uppercase italic flex items-center gap-6">
+                                                    <Icon name={cType === 'onTrade' ? 'mouse' : 'home'} size={36} className={cType === 'onTrade' ? 'text-indigo-600' : 'text-emerald-600'} />
+                                                    {cType === 'onTrade' ? 'On-Trade (Social High Impact)' : 'At-Home (Legacy & Gifting)'}
+                                                </h3>
+                                            </div>
+                                            <div className="overflow-x-auto">
+                                                <table className="w-full text-left">
+                                                    <thead className="bg-slate-100/50 italic uppercase font-mono">
+                                                        <tr>
+                                                            <th className="p-10 text-[12px] font-black text-slate-400 border-r border-slate-200/40">Keyword Cluster</th>
+                                                            <th className="p-10 text-[12px] font-black text-slate-400 border-r border-slate-200/40">Sentiment</th>
+                                                            <th className="p-10 text-[12px] font-black text-slate-400 border-r border-slate-200/40">Volume</th>
+                                                            <th className="p-10 text-[12px] font-black text-slate-400">Temporality Peak</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody className="divide-y divide-slate-100">
+                                                        {searchClusters[cType].map((row, i) => (
+                                                            <tr key={i} className="hover:bg-slate-50/80 transition-all duration-300 group">
+                                                                <td className="p-10 font-black text-xl italic uppercase tracking-tighter group-hover:text-indigo-600 transition-colors">"{row.word}"</td>
+                                                                <td className="p-10"><span className={`px-6 py-2 rounded-full text-[11px] font-black uppercase shadow-sm border ${row.sentiment.includes('Extremo') ? 'bg-slate-900 text-[#C5B358]' : 'bg-green-100 text-green-700 border-green-200'}`}>{row.sentiment}</span></td>
+                                                                <td className="p-10 text-sm font-black text-slate-400 font-mono tracking-tighter italic">{row.volume}</td>
+                                                                <td className="p-10 text-xs font-bold text-slate-600 uppercase tracking-[0.2em] leading-relaxed italic">{row.seasonality}</td>
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     ))}
                                 </div>
-                            </div>
-                        )}
+                            )}
 
-                        {tab === 'influencers' && (
-                            <div className="space-y-12 animate-in zoom-in-95">
-                                <h2 className="text-6xl font-black uppercase tracking-tighter italic decoration-red-500">Influencer Hub</h2>
-                                <div className="p-10 bg-slate-900 text-white rounded-[3rem] shadow-2xl relative overflow-hidden">
-                                    <h3 className="text-3xl font-black mb-6 italic underline decoration-[#C5B358]">Friends of the House (FOTH)</h3>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10 relative z-10">
-                                        <div className="space-y-4">
-                                            <p className="text-sm font-light leading-relaxed">Gestión estratégica de perfiles para validación de marca y viajes a la Maison. [cite: 290]</p>
-                                            <div className="flex gap-2">
-                                                <span className="px-3 py-1 bg-white/10 rounded-lg text-[10px] font-black">VALIDACIÓN DE PERFILES [cite: 289]</span>
-                                                <span className="px-3 py-1 bg-white/10 rounded-lg text-[10px] font-black">SEEDING [cite: 291]</span>
+                            {/* MARKET SHARE 360 */}
+                            {activeTab === 'share' && (
+                                <div className="space-y-16 animate-in zoom-in-95 duration-500">
+                                    <h1 className="text-7xl font-black tracking-tighter uppercase leading-none italic underline decoration-[#C5B358]/40">Market <br/> Per-Brand</h1>
+                                    <div className="flex flex-wrap gap-4 mb-10 bg-white p-5 rounded-[4rem] shadow-xl w-fit border border-slate-100">
+                                        {['moet', 'veuve', 'dom', 'chandon'].map(key => (
+                                            <button key={key} onClick={() => setActiveMarketBrand(key)} className={`px-12 py-5 rounded-full text-[11px] font-black uppercase transition-all duration-300 transform ${activeMarketBrand === key ? 'bg-slate-900 text-white shadow-2xl scale-105' : 'bg-transparent text-slate-400 hover:text-slate-900'}`}>
+                                                {key.toUpperCase()} {key === 'dom' ? 'PÉRIGNON' : ''}
+                                            </button>
+                                        ))}
+                                    </div>
+                                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                                        <div className="bg-white p-24 rounded-[6rem] shadow-2xl flex flex-col items-center border-t-[25px]" style={{borderColor: brandMarketAnalytic[activeMarketBrand].color}}>
+                                            <h3 className="text-4xl font-black mb-20 uppercase italic tracking-tighter flex items-center gap-4">
+                                                <Icon name="target" size={32} className="text-slate-300" />
+                                                Attribute Radar
+                                            </h3>
+                                            <div className="relative">
+                                                <svg viewBox="0 0 300 300" className="w-full max-w-[450px]">
+                                                    {[100, 66, 33].map(r => <circle key={r} cx="150" cy="150" r={r} fill="none" stroke="#eee" strokeWidth="1" strokeDasharray="6 4" />)}
+                                                    {[0, 72, 144, 216, 288].map(deg => <line key={deg} x1="150" y1="150" x2={150 + 100 * Math.cos((deg-90)*Math.PI/180)} y2={150 + 100 * Math.sin((deg-90)*Math.PI/180)} stroke="#f0f0f0" strokeWidth="1" />)}
+                                                    <polygon points={getRadarPoints(brandMarketAnalytic[activeMarketBrand].radar)} fill={brandMarketAnalytic[activeMarketBrand].color} opacity="0.45" stroke={brandMarketAnalytic[activeMarketBrand].color} strokeWidth="5" className="radar-transition filter drop-shadow-xl" />
+                                                    <text x="150" y="15" textAnchor="middle" fill="#999" fontSize="10" fontWeight="900" className="uppercase tracking-widest font-mono">Heritage</text>
+                                                    <text x="290" y="140" textAnchor="start" fill="#999" fontSize="10" fontWeight="900" className="uppercase tracking-widest font-mono">Versatility</text>
+                                                    <text x="240" y="285" textAnchor="start" fill="#999" fontSize="10" fontWeight="900" className="uppercase tracking-widest font-mono">Status</text>
+                                                    <text x="60" y="285" textAnchor="end" fill="#999" fontSize="10" fontWeight="900" className="uppercase tracking-widest font-mono">Exclusivity</text>
+                                                    <text x="10" y="140" textAnchor="end" fill="#999" fontSize="10" fontWeight="900" className="uppercase tracking-widest font-mono">Design</text>
+                                                </svg>
                                             </div>
                                         </div>
-                                        <div className="bg-white/5 p-6 rounded-2xl border border-white/10 backdrop-blur-sm">
-                                            <h4 className="text-[10px] font-black uppercase tracking-[0.3em] brand-gold mb-4">KPIs de Earned Media</h4>
-                                            <p className="text-xs italic leading-snug">Reporte integral incluyendo clipping, análisis de EMV (Earned Media Value), Reach y testigos. [cite: 303]</p>
+                                        <div className="bg-slate-900 text-white p-24 rounded-[6rem] shadow-2xl flex flex-col justify-center border-t-[25px] relative overflow-hidden" style={{borderColor: brandMarketAnalytic[activeMarketBrand].color}}>
+                                            <Icon name="zap" size={200} className="absolute -bottom-20 -right-20 opacity-[0.03] pointer-events-none" />
+                                            <h3 className="text-6xl font-black uppercase italic mb-10 leading-tight">Strategic <br/> Intelligence</h3>
+                                            <p className="text-3xl font-light italic opacity-90 leading-relaxed mb-14 underline decoration-[#C5B358]/20">"{brandMarketAnalytic[activeMarketBrand].insight}"</p>
+                                            <div className="p-12 bg-white/5 rounded-[4rem] border border-white/10 shadow-inner backdrop-blur-md">
+                                                <p className="text-[11px] font-black uppercase text-[#C5B358] mb-4 tracking-[0.5em]">Market Status • 2026 Core</p>
+                                                <p className="text-lg font-bold uppercase italic tracking-tighter leading-snug">
+                                                    Liderazgo Competitivo Consolidado en {activeMarketBrand === 'dom' ? 'Rareza & Valor de Inversión Cultural' : activeMarketBrand === 'veuve' ? 'Estética de Diseño & Lifestyle Solaire' : activeMarketBrand === 'moet' ? 'Validación Social & Status Global' : 'Innovación Fluida & Penetración Gen Z'}
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        )}
-                    </main>
+                            )}
+
+                            <div className="text-center text-slate-300 font-black uppercase tracking-[0.8em] py-32 border-t border-slate-100 italic text-xs">End of Intelligence Ecosystem Analysis • 2026</div>
+                        </div>
+                    </div>
                 </div>
             );
         };
