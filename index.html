@@ -3,70 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MH PR Intelligence 2026</title>
+    <title>Dossier Moët Hennessy 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .brand-gold { color: #C5B358; }
+        .bg-brand-gold { background-color: #C5B358; }
     </style>
 </head>
 <body>
     <div id="root"></div>
+
     <script type="text/babel">
         const { useState } = React;
 
         const App = () => {
-            const [activeTab, setActiveTab] = useState('summary');
+            const [tab, setTab] = useState('strategy');
 
             return (
                 <div className="min-h-screen flex flex-col md:flex-row">
-                    {/* Sidebar */}
-                    <div className="w-full md:w-64 bg-slate-900 text-white p-6">
-                        <h1 className="text-xl font-black mb-8 text-[#C5B358]">MH STRATEGY 2026</h1>
-                        <nav className="space-y-4">
-                            <button onClick={() => setActiveTab('summary')} className="block w-full text-left font-bold hover:text-[#C5B358]">Resumen Ejecutivo</button>
-                            <button onClick={() => setActiveTab('bigbets')} className="block w-full text-left font-bold hover:text-[#C5B358]">Big Bets (F1/Pharrell)</button>
+                    {/* Navegación PR Team */}
+                    <div className="w-full md:w-72 bg-slate-950 text-white p-8 flex flex-col border-r border-slate-800">
+                        <h1 className="text-2xl font-black italic tracking-tighter mb-10 brand-gold">MH 2026 <br/>PR STRATEGY</h1>
+                        <nav className="flex-1 space-y-2">
+                            <button onClick={() => setTab('strategy')} className={`w-full text-left p-4 rounded-xl font-bold uppercase text-[10px] tracking-widest transition ${tab === 'strategy' ? 'bg-white text-slate-900 shadow-xl' : 'text-slate-400 hover:bg-slate-900'}`}>Objetivos de Marca</button>
+                            <button onClick={() => setTab('calendar')} className={`w-full text-left p-4 rounded-xl font-bold uppercase text-[10px] tracking-widest transition ${tab === 'calendar' ? 'bg-white text-slate-900 shadow-xl' : 'text-slate-400 hover:bg-slate-900'}`}>Calendario 2026</button>
+                            <button onClick={() => setTab('influencers')} className={`w-full text-left p-4 rounded-xl font-bold uppercase text-[10px] tracking-widest transition ${tab === 'influencers' ? 'bg-white text-slate-900 shadow-xl' : 'text-slate-400 hover:bg-slate-900'}`}>Estrategia Influencers</button>
                         </nav>
+                        <div className="pt-8 border-t border-slate-800 opacity-50 text-[8px] uppercase tracking-widest font-black italic text-center">Data-Driven Ecosystem</div>
                     </div>
 
-                    {/* Main Content */}
-                    <div className="flex-1 p-8 md:p-12">
-                        {activeTab === 'summary' && (
-                            <div>
-                                <h2 className="text-4xl font-black mb-6 uppercase italic">Objetivo de Marca 2026</h2>
-                                <p className="text-xl mb-8">Reclutar a la próxima generación de amantes de Moët & Chandon, enfocándose en afiliación y nuevas ocasiones (+2% volumen)[cite: 169].</p>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div className="bg-white p-6 rounded-xl shadow-md border-t-4 border-[#C5B358]">
-                                        <h3 className="font-bold uppercase mb-2">Visión Moët</h3>
-                                        <p className="text-sm italic">"Ser un ícono eterno de alegría"[cite: 167].</p>
+                    {/* Contenido Dinámico */}
+                    <main className="flex-1 p-8 md:p-16 overflow-y-auto">
+                        {tab === 'strategy' && (
+                            <div className="space-y-12 max-w-4xl animate-in fade-in">
+                                <h2 className="text-6xl font-black uppercase tracking-tighter italic underline decoration-[#C5B358]/30">Brand Vision</h2>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                    <div className="p-8 bg-white rounded-3xl shadow-xl border-t-8 border-[#C5B358]">
+                                        <h3 className="font-black text-xl mb-4 italic uppercase">Moët & Chandon</h3>
+                                        <p className="text-sm text-slate-600 mb-4">"Eternal icon of joy." [cite: 167]</p>
+                                        <ul className="text-xs space-y-2 font-bold uppercase tracking-tight text-slate-400">
+                                            <li>• Iconic</li>
+                                            <li>• Joyful</li>
+                                            <li>• Chic</li>
+                                        </ul>
                                     </div>
-                                    <div className="bg-white p-6 rounded-xl shadow-md border-t-4 border-[#FFB400]">
-                                        <h3 className="font-bold uppercase mb-2">Veuve Clicquot</h3>
-                                        <p className="text-sm italic">Posicionarse como una casa de lujo más allá del champagne[cite: 349].</p>
+                                    <div className="p-8 bg-white rounded-3xl shadow-xl border-t-8 border-[#FFB400]">
+                                        <h3 className="font-black text-xl mb-4 italic uppercase">Veuve Clicquot</h3>
+                                        <p className="text-sm text-slate-600 mb-4">"Exist as a luxury house beyond champagne." [cite: 349]</p>
+                                        <ul className="text-xs space-y-2 font-bold uppercase tracking-tight text-slate-400">
+                                            <li>• Solaire House</li>
+                                            <li>• Luxury House</li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
                         )}
 
-                        {activeTab === 'bigbets' && (
-                            <div>
-                                <h2 className="text-4xl font-black mb-6 uppercase">Big Bets 2026</h2>
-                                <div className="space-y-6">
-                                    <div className="bg-slate-100 p-8 rounded-2xl">
-                                        <h3 className="text-2xl font-black mb-2 text-red-600 italic">FORMULA 1 </h3>
-                                        <p>Foco en Q3-Q4 para elevar la visibilidad de marca en momentos de alta energía[cite: 237, 281].</p>
-                                    </div>
-                                    <div className="bg-slate-100 p-8 rounded-2xl">
-                                        <h3 className="text-2xl font-black mb-2 text-blue-600 italic">PHARRELL WILLIAMS S2 </h3>
-                                        <p>Estrategia clave de "Summer Experiences" para conectar con audiencias culturales y metropolitanas[cite: 233, 272].</p>
+                        {tab === 'calendar' && (
+                            <div className="space-y-12 animate-in slide-in-from-bottom">
+                                <h2 className="text-6xl font-black uppercase tracking-tighter italic">Big Bets 2026</h2>
+                                <div className="space-y-4">
+                                    {[
+                                        { q: "Q2", event: "Summer by Pharrell Williams S2", focus: "Junio-Julio [cite: 272]", ayp: "11% Budget [cite: 233]" },
+                                        { q: "Q4", event: "Formula One (F1)", focus: "Octubre-Noviembre [cite: 281]", ayp: "7% Budget [cite: 237]" },
+                                        { q: "Q4", event: "Holiday Season / EOY", focus: "Diciembre [cite: 283]", ayp: "36% Budget [cite: 241]" }
+                                    ].map((item, i) => (
+                                        <div key={i} className="flex items-center gap-6 p-6 bg-white rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition">
+                                            <span className="text-2xl font-black text-slate-200">{item.q}</span>
+                                            <div className="flex-1">
+                                                <h4 className="font-black uppercase italic tracking-tighter">{item.event}</h4>
+                                                <p className="text-[10px] text-slate-400 font-bold uppercase">{item.focus}</p>
+                                            </div>
+                                            <span className="px-4 py-1 bg-slate-900 text-white text-[10px] font-black rounded-full italic">{item.ayp}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {tab === 'influencers' && (
+                            <div className="space-y-12 animate-in zoom-in-95">
+                                <h2 className="text-6xl font-black uppercase tracking-tighter italic decoration-red-500">Influencer Hub</h2>
+                                <div className="p-10 bg-slate-900 text-white rounded-[3rem] shadow-2xl relative overflow-hidden">
+                                    <h3 className="text-3xl font-black mb-6 italic underline decoration-[#C5B358]">Friends of the House (FOTH)</h3>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10 relative z-10">
+                                        <div className="space-y-4">
+                                            <p className="text-sm font-light leading-relaxed">Gestión estratégica de perfiles para validación de marca y viajes a la Maison. [cite: 290]</p>
+                                            <div className="flex gap-2">
+                                                <span className="px-3 py-1 bg-white/10 rounded-lg text-[10px] font-black">VALIDACIÓN DE PERFILES [cite: 289]</span>
+                                                <span className="px-3 py-1 bg-white/10 rounded-lg text-[10px] font-black">SEEDING [cite: 291]</span>
+                                            </div>
+                                        </div>
+                                        <div className="bg-white/5 p-6 rounded-2xl border border-white/10 backdrop-blur-sm">
+                                            <h4 className="text-[10px] font-black uppercase tracking-[0.3em] brand-gold mb-4">KPIs de Earned Media</h4>
+                                            <p className="text-xs italic leading-snug">Reporte integral incluyendo clipping, análisis de EMV (Earned Media Value), Reach y testigos. [cite: 303]</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         )}
-                    </div>
+                    </main>
                 </div>
             );
         };
